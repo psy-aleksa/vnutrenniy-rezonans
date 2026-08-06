@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дневник саморефлексии | Внутренний Резонанс</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0b1325;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --accent-cyan: #7be0e7;
+            --accent-blue: #2c5364;
+            --text-dark: #1e293b;
+            --border-light: #e2e8f0;
+            --shadow-soft: 0 10px 30px rgba(11, 19, 37, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0b1d33 0%, #102a45 40%, #1a3a5c 70%, #0d1b2a 100%);
+            background-attachment: fixed;
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 30px 15px 60px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .glow-bg {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(123, 224, 231, 0.15) 0%, rgba(16, 42, 69, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 680px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 30px;
+            padding: 0 10px;
+        }
+
+        .podcast-tag {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 14px;
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #a0aec0;
+            font-weight: 300;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent-blue);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title span.num {
+            background: rgba(44, 83, 100, 0.1);
+            color: var(--accent-blue);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        p.desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #475569;
+            margin-bottom: 16px;
+        }
+
+        details {
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            margin-bottom: 12px;
+        }
+
+        summary {
+            padding: 14px 16px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            color: #334155;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        details .details-content {
+            padding: 0 16px 16px 16px;
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #64748b;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        textarea {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-dark);
+            background: #ffffff;
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .tracker-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+            margin-bottom: 16px;
+        }
+
+        .day-box {
+            background: #f1f5f9;
+            border-radius: 10px;
+            padding: 10px 6px;
+            text-align: center;
+        }
+
+        .day-box label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #64748b;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .day-box input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-blue);
+            cursor: pointer;
+        }
+
+        /* КЛИКАБЕЛЬНЫЕ КНОПКИ СТРАХОВ */
+        .fear-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .fear-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 13.5px;
+            color: #475569;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s ease;
+            outline: none;
+            display: inline-block;
+        }
+
+        .fear-btn:hover {
+            border-color: var(--accent-blue);
+            background: #e2e8f0;
+        }
+
+        .fear-btn.active {
+            background: #2c5364 !important;
+            color: #ffffff !important;
+            border-color: #2c5364 !important;
+            box-shadow: 0 4px 10px rgba(44, 83, 100, 0.3);
+        }
+
+        .btn-action {
+            width: 100%;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .save-status {
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 10px;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        footer .author-name {
+            font-size: 13.5px;
+            color: var(--accent-cyan);
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-bg"></div>
+
+    <div class="container">
+        <header>
+            <div class="podcast-tag">Внутренний Резонанс • Вглубь</div>
+            <h1>Дневник саморефлексии к выпуску<br>«Синдром невидимости: как перестать быть в тени и составить честную карту себя»</h1>
+            <div class="subtitle">Интерактивная практическая карточка к подкасту</div>
+        </header>
+
+        <!-- Блок 1 -->
+        <div class="card">
+            <div class="card-title">
+                <span class="num">1</span> Ключевые смыслы выпуска
+            </div>
+            <p class="desc">Разверните темы, чтобы освежить в памяти основные тезисы:</p>
+            
+            <details>
+                <summary>Обезличивание и «Картинка из мессенджера»</summary>
+                <div class="details-content">Шаблонные открытки и подарки «на бегу» вызывают ощущение тихой пустоты. Нам жизненно необходимо подтверждение: «Ты видишь меня настоящим».</div>
+            </details>
+
+            <details>
+                <summary>Конвейер обезличивания и детский запрос</summary>
+                <div class="details-content">Главный запрос ребенка к родителям — быть увиденным как уникальная личность. Но родитель не увидит этого в ребенке, пока не откроет это в себе.</div>
+            </details>
+
+            <details>
+                <summary>Ловушка типирования и «Нормы»</summary>
+                <div class="details-content">Подгоняя себя или других под ярлыки («нарцисс», «травматик») или спрашивая «как правильно/нормально», мы отрекаемся от своей реальной сути.</div>
+            </details>
+
+            <details>
+                <summary>4 базовых страха проявления</summary>
+                <div class="details-content">1. Страх ошибки. 2. Сравнение с другими. 3. Страх показаться глупым. 4. Страх потери контроля над эмоциями.</div>
+            </details>
+
+            <details>
+                <summary>Аптекарские весы вместо «весов для картошки»</summary>
+                <div class="details-content">Оценивайте себя не огромными мешками («успех» или «ничтожество»), а точечными аптекарскими гирьками. Признание своих ограничений — точка сборки силы.</div>
+            </details>
+        </div>
+
+        <!-- Блок 2 -->
+        <div class="card">
+            <div class="card-title">
+                <span class="num">2</span> Трекер наблюдений на неделю
+            </div>
+            <p class="desc">Отмечайте дни, когда вам удалось вовремя заметить у себя уход в «тень»:</p>
+            
+            <div class="tracker-grid">
+                <div class="day-box"><label>ПН</label><input type="checkbox" id="day1"></div>
+                <div class="day-box"><label>ВТ</label><input type="checkbox" id="day2"></div>
+                <div class="day-box"><label>СР</label><input type="checkbox" id="day3"></div>
+                <div class="day-box"><label>ЧТ</label><input type="checkbox" id="day4"></div>
+                <div class="day-box"><label>ПТ</label><input type="checkbox" id="day5"></div>
+                <div class="day-box"><label>СБ</label><input type="checkbox" id="day6"></div>
+                <div class="day-box"><label>ВС</label><input type="checkbox" id="day7"></div>
+            </div>
+        </div>
+
+        <!-- Блок 3 -->
+        <div class="card">
+            <div class="card-title">
+                <span class="num">3</span> Какой страх сработал сегодня?
+            </div>
+            <p class="desc">Нажмите на механизмы, которые вы отследили у себя в течение дня:</p>
+            
+            <div class="fear-tags">
+                <button type="button" class="fear-btn" onclick="toggleFear(this)">Страх ошибки</button>
+                <button type="button" class="fear-btn" onclick="toggleFear(this)">Сравнение с другими</button>
+                <button type="button" class="fear-btn" onclick="toggleFear(this)">Страх показаться глупым</button>
+                <button type="button" class="fear-btn" onclick="toggleFear(this)">Страх всплеска эмоций</button>
+            </div>
+
+            <p class="desc">Что именно произошло? (краткая заметка без оценки):</p>
+            <textarea id="fear-note" placeholder="Например: Сравнивал(а) свои успехи с коллегой..."></textarea>
+        </div>
+
+        <!-- Блок 4 -->
+        <div class="card">
+            <div class="card-title">
+                <span class="num">4</span> Практика: Честная «Карта себя»
+            </div>
+            <p class="desc">Сформулируйте одну простую, честную правду о себе на сегодня:</p>
+            
+            <textarea id="self-map-fact" placeholder="Например: «Я начинаю тараторить, когда волнуюсь. И это моя точка отсчета»"></textarea>
+            
+            <div style="margin-top: 16px;">
+                <button type="button" class="btn-action" onclick="saveData()">Сохранить записи в мой дневник</button>
+                <div class="save-status" id="save-status">🔒 Все записи хранятся конфиденциально только на вашем устройстве</div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="author-name">Александра Илюшникова</div>
+            <div>глубинно-ориентированный психолог</div>
+            <div style="margin-top: 4px; opacity: 0.5; font-size: 11px;">Подкаст «Внутренний Резонанс»</div>
+        </footer>
+    </div>
+
+    <script>
+        function toggleFear(btn) {
+            btn.classList.toggle('active');
+        }
+
+        function saveData() {
+            const activeButtons = Array.from(document.querySelectorAll('.fear-btn.active')).map(b => b.innerText);
+            
+            const data = {
+                day1: document.getElementById('day1').checked,
+                day2: document.getElementById('day2').checked,
+                day3: document.getElementById('day3').checked,
+                day4: document.getElementById('day4').checked,
+                day5: document.getElementById('day5').checked,
+                day6: document.getElementById('day6').checked,
+                day7: document.getElementById('day7').checked,
+                fearNote: document.getElementById('fear-note').value,
+                selfMapFact: document.getElementById('self-map-fact').value,
+                activeFears: activeButtons
+            };
+
+            localStorage.setItem('self_reflection_diary_data', JSON.stringify(data));
+
+            const status = document.getElementById('save-status');
+            status.innerText = "✓ Записи успешно сохранены!";
+            status.style.color = "#059669";
+            
+            setTimeout(() => {
+                status.innerText = "🔒 Все записи хранятся конфиденциально только на вашем устройстве";
+                status.style.color = "#94a3b8";
+            }, 3000);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('self_reflection_diary_data');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    for (let i = 1; i <= 7; i++) {
+                        if (data['day' + i]) document.getElementById('day' + i).checked = true;
+                    }
+                    if (data.fearNote) document.getElementById('fear-note').value = data.fearNote;
+                    if (data.selfMapFact) document.getElementById('self-map-fact').value = data.selfMapFact;
+                    if (data.activeFears) {
+                        document.querySelectorAll('.fear-btn').forEach(btn => {
+                            if (data.activeFears.includes(btn.innerText)) {
+                                btn.classList.add('active');
+                            }
+                        });
+                    }
+                } catch(e) {}
+            }
+        });
+    </script>
+</body>
+</html>
